@@ -1,0 +1,27 @@
+from google.cloud import texttospeech
+import os
+
+os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = 'json文件路径'
+
+client = texttospeech.TextToSpeechClient()
+
+synthesis_input = texttospeech.types.SynthesisInput(
+    text="This Synthesized speech is read in from text within the application. "
+    "Synthesized speech can be created by concatenating pieces of "
+    "speech synthesizers since the early 1990s.")
+
+
+voice = texttospeech.types.VoiceSelectionParams(
+    language_code='哪种语言',
+    name='哪把声音',
+    ssml_gender=texttospeech.enums.SsmlVoiceGender.FEMALE)
+
+audio_config = texttospeech.types.AudioConfig(
+    audio_encoding=texttospeech.enums.AudioEncoding.MP3,speaking_rate={语速})
+
+
+response = client.synthesize_speech(synthesis_input, voice, audio_config)
+
+with open('文件名', 'wb') as out:
+    out.write(response.audio_content)
+    print('Audio content written to file "文件名"')
